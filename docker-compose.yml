@@ -1,0 +1,26 @@
+version: '2'
+services:
+    mysql:
+        container_name: laravel-mysql
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: pass
+            MYSQL_DATABASE: "test"
+            MYSQL_USER: "test"
+            MYSQL_PASSWORD: "test"
+            MYSQL_HOST: ""
+        volumes:
+            - ./db:/var/lib/mysql
+    php:
+        container_name: laravel-app
+        build: php
+        ports:
+            - "80:80"
+        volumes:
+            - ./application:/var/www/html
+            - ./php/apache2.conf:/etc/apache2/apache2.conf
+            - ./php/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        environment:
+            CODEIGNITER_ENV: development
+        depends_on:
+            - mysql
